@@ -1,35 +1,26 @@
 import { Link, Navigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import swal from "sweetalert";
 import { useUserAuth } from "../context/UserAuthContext";
 
-function Listado(props) {
+function Favoritos(props) {
+  // let token = sessionStorage.getItem("token");
   const { user } = useUserAuth();
-  const [moviesList, setMoviesList] = useState([]);
-  useEffect(() => {
-    const endPoint =
-      "https://api.themoviedb.org/3/discover/movie?api_key=e79dfe9fcb65825a15e344de030f4422&language=es-ES$page=1";
-    axios
-      .get(endPoint)
-      .then((response) => {
-        const apiData = response.data;
-        setMoviesList(apiData.results);
-      })
-      .catch(() => swal(<h2>Hubo errores, intenta mas tarde.</h2>));
-  }, [setMoviesList]);
 
   return (
     <>
-      {!user && <Navigate to="/listado" />}
-
+      {!user && <Navigate to="/" />}
+      <h2>Tus favoritos</h2>
+      {!props.favorites.length && (
+        <div className="text-danger col-12">
+          El almacenamiento de favoritos esta vacio!
+        </div>
+      )}
       <div className="row">
-        {moviesList.map((oneMovie, idx) => {
+        {props.favorites.map((oneMovie, idx) => {
           return (
             <div className="col-3" key={idx}>
               <div className="card">
                 <img
-                  src={`https://image.tmdb.org/t/p/w500/${oneMovie.poster_path}`}
+                  src={oneMovie.imgURL}
                   className="card-img-top"
                   alt="Imagen"
                 />
@@ -38,7 +29,7 @@ function Listado(props) {
                   onClick={props.addOrRemoveFromFavs}
                   data-movie-id={oneMovie.id}
                 >
-                  ❤️
+                  💔
                 </button>
                 <div className="card-body">
                   <h5 className="card-title">{oneMovie.title}</h5>
@@ -59,4 +50,4 @@ function Listado(props) {
   );
 }
 
-export default Listado;
+export default Favoritos;
