@@ -1,0 +1,11 @@
+.nav-container .ul-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-container .ul-links {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}

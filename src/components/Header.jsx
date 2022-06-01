@@ -1,54 +1,32 @@
-import { Link } from "react-router-dom";
-import { Button } from "react-bootstrap";
-import { useUserAuth } from "../context/UserAuthContext";
-import { useNavigate } from "react-router";
-
 // import Buscador from "./Buscador";
+import { Link } from "react-router-dom";
+import "./Header.css";
 
 function Header(props) {
-  const navigate = useNavigate();
-  const { logOut, user } = useUserAuth();
-
-  const handleLogout = async () => {
-    try {
-      await logOut();
-      navigate("/");
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
   return (
     <>
       <header>
-        <nav>
-          <ul>
+        <nav className="nav-container">
+          <ul className="ul-container">
             <li>
-              <Link to="/">Home</Link>
+              <Link to="/">LOGO</Link>
             </li>
-            <li>
-              <Link to="/listado">Listado</Link>
-            </li>
-            <li>
-              <Link to="/favoritos">Favs</Link>
-            </li>
-            <li>
-              <span>
-                {props.favorites.length > 0 && (
-                  <>Cantidad en favs: {props.favorites.length}</>
-                )}
-              </span>
-            </li>
-            <li>
-              <span>
-                <div>
-                  Hello Welcome <br />
-                  {user && user.email}
-                  <Button variant="primary" onClick={handleLogout}>
-                    Log out
-                  </Button>
-                </div>
-              </span>
-            </li>
+            <ul className="ul-links">
+              <li>
+                <Link to="/">Inicio</Link>
+              </li>
+              <li>
+                <Link to="/listado">Peliculas</Link>
+              </li>
+              <li>
+                <Link to="/favoritos">
+                  <i className="fa-solid fa-heart"></i>
+                </Link>
+                <span>
+                  {props.favorites.length > 0 && <>{props.favorites.length}</>}
+                </span>
+              </li>
+            </ul>
           </ul>
           {/* <Buscador /> */}
         </nav>

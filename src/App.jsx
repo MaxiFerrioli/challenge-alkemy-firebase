@@ -70,50 +70,39 @@ function App() {
   };
 
   return (
-    <Container>
-      <Row>
-        <Col>
-          <UserAuthContextProvider>
-            <Header favorites={favorites} />
-            <Routes>
-              <Route path="/" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route
-                path="/favoritos"
-                element={
-                  <Favoritos
-                    favorites={favorites}
-                    addOrRemoveFromFavs={addOrRemoveFromFavs}
-                  />
-                }
-              />
-              <Route path="/detalle" element={<Detalle />} />
+    <UserAuthContextProvider>
+      <Header favorites={favorites} />
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route
+          path="/favoritos"
+          element={
+            <Favoritos
+              favorites={favorites}
+              addOrRemoveFromFavs={addOrRemoveFromFavs}
+            />
+          }
+        />
+        <Route path="/detalle" element={<Detalle />} />
 
-              <Route
-                path="/listado"
-                element={
-                  <ProtectedRoute>
-                    <Listado addOrRemoveFromFavs={addOrRemoveFromFavs}/>
-                  </ProtectedRoute>
-                }
-              />
-              {/* <Route
-                path="/listado"
-                element={<Listado addOrRemoveFromFavs={addOrRemoveFromFavs} />}
-              /> */}
-
-              {/* <Route
+        <Route
+          path="/listado"
+          element={
+            <ProtectedRoute>
+              <Listado addOrRemoveFromFavs={addOrRemoveFromFavs} />
+            </ProtectedRoute>
+          }
+        />
+        {/* <Route
                 path="/resultados"
                 element={
                   <Resultados addOrRemoveFromFavs={addOrRemoveFromFavs} />
                 }
               /> */}
-            </Routes>
-            <Footer />
-          </UserAuthContextProvider>
-        </Col>
-      </Row>
-    </Container>
+      </Routes>
+      <Footer />
+    </UserAuthContextProvider>
   );
 }
 

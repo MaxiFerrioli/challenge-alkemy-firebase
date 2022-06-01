@@ -1,12 +1,16 @@
-import { Link, Navigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 import axios from "axios";
 import swal from "sweetalert";
+import { Link, Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useUserAuth } from "../context/UserAuthContext";
+import { Button } from "react-bootstrap";
+import { useNavigate } from "react-router";
 
 function Listado(props) {
-  const { user } = useUserAuth();
+  const { user, logOut } = useUserAuth();
   const [moviesList, setMoviesList] = useState([]);
+  const navigate = useNavigate();
+
   useEffect(() => {
     const endPoint =
       "https://api.themoviedb.org/3/discover/movie?api_key=e79dfe9fcb65825a15e344de030f4422&language=es-ES$page=1";
@@ -19,9 +23,27 @@ function Listado(props) {
       .catch(() => swal(<h2>Hubo errores, intenta mas tarde.</h2>));
   }, [setMoviesList]);
 
+  const handleLogout = async () => {
+    try {
+      await logOut();
+      navigate("/");
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <>
       {!user && <Navigate to="/listado" />}
+
+      <div>
+        <span>
+          {user && user.email}
+          <Button variant="primary" onClick={handleLogout}>
+            Salir
+          </Button>
+        </span>
+      </div>
 
       <div className="row">
         {moviesList.map((oneMovie, idx) => {
