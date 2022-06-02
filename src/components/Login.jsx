@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Form, Alert } from "react-bootstrap";
+import { Link, useNavigate, Navigate } from "react-router-dom";
+import { Form, Alert, Container } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import GoogleButton from "react-google-button";
 import { useUserAuth } from "../context/UserAuthContext";
@@ -9,7 +9,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const { logIn, googleSignIn } = useUserAuth();
+  const { logIn, googleSignIn, user } = useUserAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -17,7 +17,7 @@ const Login = () => {
     setError("");
     try {
       await logIn(email, password);
-      navigate("/home");
+      navigate("/listado");
     } catch (err) {
       setError(err.message);
     }
@@ -27,7 +27,7 @@ const Login = () => {
     e.preventDefault();
     try {
       await googleSignIn();
-      navigate("/home");
+      navigate("/listado");
     } catch (error) {
       console.log(error.message);
     }
@@ -35,44 +35,48 @@ const Login = () => {
 
   return (
     <>
-      <div className="p-4 box">
-        <h2 className="mb-3">Formulario de ingreso</h2>
-        {error && <Alert variant="danger">{error}</Alert>}
-        <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Control
-              type="email"
-              placeholder="Email address"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </Form.Group>
+      {user && <Navigate to="/listado" />}
 
-          <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Control
-              type="password"
-              placeholder="Password"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </Form.Group>
+      <Container>
+        <div className="p-4 box">
+          <h2 className="mb-3">Formulario de ingreso</h2>
+          {error && <Alert variant="danger">{error}</Alert>}
+          <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Control
+                type="email"
+                placeholder="Email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </Form.Group>
 
-          <div className="d-grid gap-2">
-            <Button variant="primary" type="Submit">
-              Log In
-            </Button>
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Control
+                type="password"
+                placeholder="Contraseña"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Form.Group>
+
+            <div className="d-grid gap-2">
+              <Button variant="primary" type="Submit">
+                Ingresar
+              </Button>
+            </div>
+          </Form>
+          <hr />
+          <div>
+            <GoogleButton
+              className="g-btn"
+              type="dark"
+              onClick={handleGoogleSignIn}
+            />
           </div>
-        </Form>
-        <hr />
-        <div>
-          <GoogleButton
-            className="g-btn"
-            type="dark"
-            onClick={handleGoogleSignIn}
-          />
         </div>
-      </div>
-      <div className="p-4 box mt-3 text-center">
-        Don't have an account? <Link to="/signup">Sign up</Link>
-      </div>
+        <div className="p-4 box mt-3 text-center">
+          ¿No tienes cuenta? <Link to="/signup">Regístrate</Link>
+        </div>
+      </Container>
     </>
   );
 };

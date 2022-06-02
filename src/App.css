@@ -14,13 +14,6 @@ body {
     height: 100%;
 }
 
-ul,
-li {
-    text-decoration: none;
-    list-style: none;
-    color: black;
-}
-
 .btn-fav {
     width: 30px;
     height: 30px;
